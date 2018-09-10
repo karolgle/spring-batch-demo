@@ -60,7 +60,7 @@ public class SpringBatchDemoApplicationTests {
 
     private JobParameters jobParameterWithPEPType;
     private JobParameters jobParameterWithAMType;
-    JobParameters jobParameterWithDENYType;
+    private JobParameters jobParameterWithDENYType;
 
     @Before
     public void setUp() {

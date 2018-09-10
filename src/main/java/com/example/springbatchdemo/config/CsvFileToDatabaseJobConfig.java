@@ -68,13 +68,10 @@ public class CsvFileToDatabaseJobConfig {
     @Bean
     @StepScope
     public ItemProcessor<Watchlist, Watchlist> process(@Value("#{jobParameters[type]}") String type, @Value("#{jobParameters[ts]}") Long ts) {
-        return new ItemProcessor<Watchlist, Watchlist>() {
-            @Override
-            public Watchlist process(Watchlist watchlist) {
-                watchlist.setType(type);
-                watchlist.setTs(ts);
-                return watchlist;
-            }
+        return watchlist -> {
+            watchlist.setType(type);
+            watchlist.setTs(ts);
+            return watchlist;
         };
     }
 
