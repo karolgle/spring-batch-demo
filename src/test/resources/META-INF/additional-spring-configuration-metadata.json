@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "csv.to.database.job.cron",
+      "type": "java.lang.String",
+      "description": "Scheduler CRON for ETL watchlist job"
+    },
+    {
+      "name": "csv.to.database.job.source.file.path",
+      "type": "java.lang.String",
+      "description": "Path to source file for ETL watchlist job"
+    }
+  ] }
