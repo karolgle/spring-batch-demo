@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
@@ -39,14 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpringBatchDemoApplicationTests {
 
     private static final String COMPLETED = "COMPLETED";
-    @Autowired
-    JobBuilderFactory jbf;
-
-    @Autowired
-    StepBuilderFactory sbf;
-
-    @Autowired
-    CustomJobExecutionListener customJobExecutionListener;
 
     @Autowired
     private Job job;

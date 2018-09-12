@@ -8,8 +8,6 @@ import com.example.springbatchdemo.repositories.WatchlistRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
@@ -30,15 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class SpringBatchDemoApplicationMissingColumnTests {
-
-    @Autowired
-    JobBuilderFactory jbf;
-
-    @Autowired
-    StepBuilderFactory sbf;
-
-    @Autowired
-    CustomJobExecutionListener customJobExecutionListener;
 
     @Autowired
     private Job job;

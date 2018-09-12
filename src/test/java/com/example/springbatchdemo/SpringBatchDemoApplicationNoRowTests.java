@@ -8,22 +8,16 @@ import com.example.springbatchdemo.repositories.WatchlistRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,29 +30,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpringBatchDemoApplicationNoRowTests {
 
     @Autowired
-    JobBuilderFactory jbf;
-
-    @Autowired
-    StepBuilderFactory sbf;
-
-    @Autowired
-    CustomJobExecutionListener customJobExecutionListener;
-
-    @Autowired
-    private DataSource testDataSource;
-
-    @Autowired
-    private JdbcBatchItemWriter jdbcBatchItemWriter;
-
-
-    @Autowired
     private Job job;
 
     @Autowired
     private JobLauncher jobLauncher;
-
-    @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
