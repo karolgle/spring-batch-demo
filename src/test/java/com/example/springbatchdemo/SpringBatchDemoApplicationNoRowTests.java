@@ -2,7 +2,8 @@ package com.example.springbatchdemo;
 
 import com.example.springbatchdemo.config.CsvFileToDatabaseJobConfig;
 import com.example.springbatchdemo.config.TestConfiguration;
-import com.example.springbatchdemo.listenres.CustomJobExecutionListener;
+import com.example.springbatchdemo.listeners.CustomJobExecutionListener;
+import com.example.springbatchdemo.model.WatchlistType;
 import com.example.springbatchdemo.repositories.WatchlistRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,14 +70,14 @@ public class SpringBatchDemoApplicationNoRowTests {
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
         jobParametersBuilder.addLong("ts", System.currentTimeMillis());
 
-        jobParametersBuilder.addString("type", "PEP");
+        jobParametersBuilder.addString("type", WatchlistType.PEP.toString());
         JobParameters jobParameterWithPEPType = jobParametersBuilder.toJobParameters();
         // when
         JobExecution jobExecution = jobLauncher.run(job, jobParameterWithPEPType);
 
         // then
         assertThat(jobExecution.getExitStatus().getExitCode()).isEqualToIgnoringCase("FAILED");
-        assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM WATCHLIST WHERE type = ?",new Object[] { "PEP" }, Integer.class)).isEqualTo(0);
+        assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM WATCHLIST WHERE type = ?",new Object[] { WatchlistType.PEP.toString() }, Integer.class)).isEqualTo(0);
 
     }
 }

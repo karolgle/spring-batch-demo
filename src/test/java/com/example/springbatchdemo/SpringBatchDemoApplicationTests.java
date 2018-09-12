@@ -2,7 +2,8 @@ package com.example.springbatchdemo;
 
 import com.example.springbatchdemo.config.CsvFileToDatabaseJobConfig;
 import com.example.springbatchdemo.config.TestConfiguration;
-import com.example.springbatchdemo.listenres.CustomJobExecutionListener;
+import com.example.springbatchdemo.listeners.CustomJobExecutionListener;
+import com.example.springbatchdemo.model.WatchlistType;
 import com.example.springbatchdemo.repositories.WatchlistRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class SpringBatchDemoApplicationTests {
 
+    private static final String COMPLETED = "COMPLETED";
     @Autowired
     JobBuilderFactory jbf;
 
@@ -68,13 +70,13 @@ public class SpringBatchDemoApplicationTests {
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
         jobParametersBuilder.addLong("ts", ts);
 
-        jobParametersBuilder.addString("type", "PEP");
+        jobParametersBuilder.addString("type", WatchlistType.PEP.toString());
         jobParameterWithPEPType = jobParametersBuilder.toJobParameters();
 
-        jobParametersBuilder.addString("type", "AM");
+        jobParametersBuilder.addString("type", WatchlistType.AM.toString());
         jobParameterWithAMType = jobParametersBuilder.toJobParameters();
 
-        jobParametersBuilder.addString("type", "DENY");
+        jobParametersBuilder.addString("type", WatchlistType.DENY.toString());
         jobParameterWithDENYType = jobParametersBuilder.toJobParameters();
 
     }
@@ -88,8 +90,8 @@ public class SpringBatchDemoApplicationTests {
 
         // then
         assertThat(jobExecution.getExitStatus()
-                               .getExitCode()).isEqualToIgnoringCase("COMPLETED");
-        assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM WATCHLIST WHERE type = ?", new Object[]{"PEP"}, Integer.class)).isEqualTo(100000);
+                               .getExitCode()).isEqualToIgnoringCase(COMPLETED);
+        assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM WATCHLIST WHERE type = ?", new Object[]{WatchlistType.PEP.toString()}, Integer.class)).isEqualTo(100000);
 
     }
 
@@ -99,7 +101,7 @@ public class SpringBatchDemoApplicationTests {
         // given
         List<JobExecution> finishedJobs = new ArrayList<>();
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("types", Stream.of("PEP", "AM", "DENY")
+        parameters.addValue("types", Stream.of(WatchlistType.PEP.toString(), WatchlistType.AM.toString(), WatchlistType.DENY.toString())
                                            .collect(Collectors.toSet()));
         // when
         finishedJobs.add(jobLauncher.run(job, jobParameterWithPEPType));
@@ -109,7 +111,7 @@ public class SpringBatchDemoApplicationTests {
         // then
         assertThat(finishedJobs).extracting(jobExecution -> jobExecution.getExitStatus()
                                                                         .getExitCode())
-                                .allMatch(s -> s.equalsIgnoreCase("COMPLETED"));
+                                .allMatch(s -> s.equalsIgnoreCase(COMPLETED));
         assertThat(namedParameterJdbcTemplate.queryForObject("SELECT count(*) FROM WATCHLIST WHERE type IN (:types)", parameters, Integer.class)).isEqualTo(300000);
     }
 }

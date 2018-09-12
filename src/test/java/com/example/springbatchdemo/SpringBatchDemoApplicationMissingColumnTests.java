@@ -2,7 +2,8 @@ package com.example.springbatchdemo;
 
 import com.example.springbatchdemo.config.CsvFileToDatabaseJobConfig;
 import com.example.springbatchdemo.config.TestConfiguration;
-import com.example.springbatchdemo.listenres.CustomJobExecutionListener;
+import com.example.springbatchdemo.listeners.CustomJobExecutionListener;
+import com.example.springbatchdemo.model.WatchlistType;
 import com.example.springbatchdemo.repositories.WatchlistRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,16 +14,12 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,20 +41,10 @@ public class SpringBatchDemoApplicationMissingColumnTests {
     CustomJobExecutionListener customJobExecutionListener;
 
     @Autowired
-    private DataSource testDataSource;
-
-    @Autowired
-    private JdbcBatchItemWriter jdbcBatchItemWriter;
-
-
-    @Autowired
     private Job job;
 
     @Autowired
     private JobLauncher jobLauncher;
-
-    @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -69,7 +56,7 @@ public class SpringBatchDemoApplicationMissingColumnTests {
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
         jobParametersBuilder.addLong("ts", System.currentTimeMillis());
 
-        jobParametersBuilder.addString("type", "DENY");
+        jobParametersBuilder.addString("type", WatchlistType.DENY.toString());
         JobParameters jobParameterWithDENYType = jobParametersBuilder.toJobParameters();
         // when
         JobExecution jobExecution = jobLauncher.run(job, jobParameterWithDENYType);
@@ -77,7 +64,7 @@ public class SpringBatchDemoApplicationMissingColumnTests {
         // then
         assertThat(jobExecution.getExitStatus()
                                .getExitCode()).isEqualToIgnoringCase("FAILED");
-        assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM WATCHLIST WHERE type = ?", new Object[]{"DENY"}, Integer.class)).isEqualTo(0);
+        assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM WATCHLIST WHERE type = ?", new Object[]{WatchlistType.DENY.toString()}, Integer.class)).isEqualTo(0);
 
     }
 }

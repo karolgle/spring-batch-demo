@@ -38,7 +38,7 @@ public class CsvFileToDatabaseJobLauncher {
         //timestamp for the job should be the same across all data chunks
         jobParametersBuilder.addLong("ts", System.currentTimeMillis());
 
-        //get random type of List
+        //get random watchlist type, because of this we can observe different watchlist loaded.
         jobParametersBuilder.addString("type", WatchlistType.getRandom()
                                                             .toString());
         return jobParametersBuilder.toJobParameters();

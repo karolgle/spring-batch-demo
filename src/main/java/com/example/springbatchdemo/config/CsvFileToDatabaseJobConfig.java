@@ -1,6 +1,6 @@
 package com.example.springbatchdemo.config;
 
-import com.example.springbatchdemo.listenres.CustomJobExecutionListener;
+import com.example.springbatchdemo.listeners.CustomJobExecutionListener;
 import com.example.springbatchdemo.model.Watchlist;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

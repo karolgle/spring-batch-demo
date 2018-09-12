@@ -1,4 +1,4 @@
-package com.example.springbatchdemo.listenres;
+package com.example.springbatchdemo.listeners;
 
 import com.example.springbatchdemo.repositories.WatchlistRepository;
 import org.springframework.batch.core.JobExecution;

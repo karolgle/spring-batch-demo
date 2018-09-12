@@ -1,7 +1,7 @@
 ## Synopsis
 
 This is a simple project that shows an implementation of ETL with spring batch. The ETL is done from csv file to H2 in-memory database.
-The csv represent watchlist with entires that should be loaded to DB with timestamp for current job and randomly chosen watchlist type(PEP, AM, DENY).
+The csv represent watchlist with entries that should be loaded to DB with timestamp for current job and randomly chosen watchlist type(PEP, AM, DENY).
 Basic error handling for missing columns or empty file is performed.
 
 ## Requirements
